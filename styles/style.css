@@ -1,0 +1,17 @@
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body{
+  background-color: #C1D72E ;
+}
+
+#chosen-word-container{
+  margin: 4rem 0rem;
+}
+
+button[disabled]{
+  opacity: .40;
+}
