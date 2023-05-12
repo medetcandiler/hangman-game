@@ -30,18 +30,14 @@ const resetButton = document.querySelector('#reset');
 const bottomButtons = document.querySelector('#bottom-buttons');
 const chosenWordContainer = document.querySelector('#chosen-word-container');
 const canvasContainer = document.querySelector('#canvas-container');
-const remainContainer = document.querySelector('#remain-container')
+const remainContainer = document.querySelector('#remain-container');
+const canvass = document.querySelector('#canvas');
 
 
 // neccessarry variables 
 let chosenCategory;
 let count = 0;
 let rightToTry = 7;
-
-
-
-
-
 
 
 // display categories
@@ -58,24 +54,23 @@ function displayCategories() {
     btn.addEventListener('click', (e) => {
       bottomButtons.classList.remove('hidden');
       if (e.target.innerText === 'Fruits') {
-        let chosenCategory = e.target.innerText.toLowerCase();
+        chosenCategory = e.target.innerText.toLowerCase();
         selectedCategory.innerHTML = `<h3 class='text-2xl text-orange-600 text-center'>The Chosen Category is ${e.target.innerText}</h3>`;
-        genareteLetters();
-        generateWord(chosenCategory);
+        // generateWord(chosenCategory);
+        genareteLetters(generateWord(chosenCategory));
         remainingRight(rightToTry);
+
         categoriesContainer.style.display = 'none';
       } else if (e.target.innerText === 'Animals') {
-        let chosenCategory = e.target.innerText.toLowerCase();
+        chosenCategory = e.target.innerText.toLowerCase();
         selectedCategory.innerHTML = `<h3 class='text-2xl text-orange-600 text-center'>The Chosen Category is ${e.target.innerText}</h3>`
-        genareteLetters();
-        generateWord(chosenCategory);
+        genareteLetters(generateWord(chosenCategory));
         remainingRight(rightToTry);
         categoriesContainer.style.display = 'none';
       } else {
-        let chosenCategory = e.target.innerText.toLowerCase();
+        chosenCategory = e.target.innerText.toLowerCase();
         selectedCategory.innerHTML = `<h3 class='text-2xl text-orange-600 text-center'>The Chosen Category is ${e.target.innerText}</h3>`
-        genareteLetters();
-        generateWord(chosenCategory);
+        genareteLetters(generateWord(chosenCategory));
         remainingRight(rightToTry);
         categoriesContainer.style.display = 'none';
       }
@@ -87,39 +82,51 @@ function displayCategories() {
 
 
 // generator of letter buttons
-function genareteLetters() {
+function genareteLetters(chosenWord) {
   for (let alp of alphabet) {
     const letterBtn = document.createElement('button');
     letterBtn.id = alphabet.indexOf(alp);
     letterBtn.innerText = alp;
     letterBtn.classList.add('text-[#C1D72E]', 'px-6', 'py-3', 'bg-orange-600', 'border', 'border-orange-600', 'hover:bg-transparent', 'hover:text-orange-600', 'rounded-lg');
     letterContainer.appendChild(letterBtn);
-    letterClickHandler(letterBtn)
+    letterClickHandler(letterBtn, chosenWord)
   }
 }
 
 // letter buttons onclick event 
-function letterClickHandler(letterButton) {
+function letterClickHandler(letterButton, chosenWord) {
+  // to turn the chosenWord array into string 
+  word = chosenWord.join('');
+
+
+
   letterButton.addEventListener('click', e => {
-    count = ++count;
-    if (count > 6) {
-      canvasContainer.innerHTML = `
-      <h1 class='text-2xl text-orange-500 text-center px-5 font-bold'> <strong>You Lost.</strong> If you would like to play again please click on Play Again button!
-      `
-    } else {
-      rightToTry = --rightToTry;
-      console.log(rightToTry)
+    count++;
+    console.log(count, 'count')
+    e.target.disabled = true
+    if (e.target.textContent.includes(word)) {
+      // displayGeneratedWord(chosenWord);
+
+
+
+    } else if (!e.target.textContent.includes(word)) {
+      rightToTry--;
+      console.log(rightToTry);
+      
       if (rightToTry === 1) {
         remainContainer.innerHTML = `The remaining right '${rightToTry}' <br>
-
         It is your last chance be careful!`
         drawMan(count)
-      } else{
+      } else {
         remainingRight(rightToTry)
         drawMan(count)
       }
-      
-
+      if (count > 6) {
+        remainContainer.innerHTML = `
+      <h1 class='text-2xl text-orange-500 text-center px-5 font-bold'> <strong>You Lost. The word was ${word.toUpperCase()}</strong> <br> If you would like to play again please click on Play Again button!
+      `;
+      canvass.style.display = 'none'
+      }
     }
   })
 }
@@ -127,18 +134,16 @@ function letterClickHandler(letterButton) {
 
 // remaining right displayer
 function remainingRight(remainRight) {
-  remainContainer.innerHTML = `The remaining right '${remainRight}'`
+  remainContainer.innerHTML = `The remaining right: ${remainRight}`
 }
-
-
-
 
 
 // generate hangman vocabulary
 function generateWord(chosenCategory) {
+  console.log(chosenCategory, '--');
   const randomVocab = categories[chosenCategory][Math.floor(Math.random() * categories[chosenCategory].length)].toLowerCase();
   const randomVocabArr = randomVocab.split('');
-  displayGeneratedWord(randomVocabArr)
+  displayGeneratedWord(randomVocabArr);
   return randomVocabArr;
 }
 
@@ -151,8 +156,12 @@ function displayGeneratedWord(chosenWordArr) {
     underscopes.classList.add(`${letter}`, 'text-orange-500', 'font-bold', 'drop-shadow-md')
     chosenWordContainer.appendChild(underscopes)
   })
+  return chosenWordArr;
 }
-
+//
+//
+//
+//
 // Hangman canvas generator (took from w3school)
 function canvasGenerator() {
   let context = canvas.getContext("2d");
