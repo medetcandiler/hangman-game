@@ -6,11 +6,10 @@
 
 body{
   background-color: #C1D72E ;
-
 }
 
 #chosen-word-container{
-  margin: 4rem 0rem;
+  margin: 3rem 0rem;
 }
 
 button[disabled]{
