@@ -32,19 +32,19 @@ const remainContainer = document.querySelector('#remain-container');
 const canvass = document.querySelector('#canvas');
 const header = document.querySelector('#header');
 const welcome = document.querySelector('#welcome');
+const hintButton = document.querySelector('#hint');
 
 // neccessarry variables 
 let chosenCategory;
 let count = 0;
 let rightToTry = 7;
-let wordObject;
 let chosenWord;
+
 
 // display categories
 function displayCategories() {
   categoriesContainer.innerHTML = `<h3 class='text-2xl text-orange-600 text-center'>Categories:</h3>`
   const buttonContainer = document.createElement('div');
-
   for (let cat in categories) {
     buttonContainer.innerHTML += `<button class='categories px-6 py-3 focus:ring-orange-600 focus:ring-4 text-orange-600 border border-orange-600 rounded-lg bg-transparent hover:bg-orange-600 ease-in duration-300 hover:text-[#C1D72E] mr-3'>${cat[0].toUpperCase() + cat.slice(1, cat.length)}</button>`
     categoriesContainer.appendChild(buttonContainer)
@@ -91,8 +91,6 @@ function displayCategories() {
   })
 }
 
-
-
 // generator of letter buttons
 function genareteLetters(chosenWord) {
   console.log(chosenWord)
@@ -115,18 +113,17 @@ function letterClickHandler(letterButton, chosenWordArr) {
       clicked.include = true
       displayGeneratedWord(chosenWordArr)
       updateWordArray(e.target.textContent, chosenWordArr)
-      if(chosenWordArr.every(item => item.include === true )){
+      if (chosenWordArr.every(item => item.include === true)) {
         remainContainer.innerHTML = `
       <h1 class='text-2xl text-orange-500 text-center px-5 font-bold'> <strong>Congratulations you have guessed the word. If you would like to play again please click on the Play Again button!
       `;
-      canvass.style.display = 'none'
+        canvass.style.display = 'none'
       }
     } else if (chosenWordArr.some(item => item.letter !== e.target.textContent.toLowerCase())) {
       count++;
       rightToTry--;
-
       if (rightToTry === 1) {
-        remainContainer.innerHTML = `The remaining right '${rightToTry}' <br>
+        remainContainer.innerHTML = `The remaining right: ${rightToTry} <br>
         It is your last chance be careful!`
         drawMan(count)
       } else {
@@ -138,8 +135,8 @@ function letterClickHandler(letterButton, chosenWordArr) {
         remainContainer.innerHTML = `
       <h1 class='text-2xl text-orange-500 text-center px-5 font-bold'> <strong>You Lost. The word was ${word.join('')} </strong> <br> If you would like to play again please click on Play Again button!
       `;
-      const x = letterContainer.childNodes;
-      x.forEach(item => item.disabled = true)
+        const x = letterContainer.childNodes;
+        x.forEach(item => item.disabled = true)
         canvass.style.display = 'none'
       }
     }
@@ -147,9 +144,10 @@ function letterClickHandler(letterButton, chosenWordArr) {
 }
 
 
+
 // remaining right displayer
 function remainingRight(remainRight) {
-  remainContainer.innerHTML = `The remaining right: ${remainRight}`
+  remainContainer.innerHTML = `The remaining right: ${remainRight} `
 }
 
 
@@ -166,15 +164,13 @@ function generateWord(chosenCategory) {
   })
   return wordObject;
 }
-const div = document.createElement('div');
-
 
 function displayGeneratedWord(wordArrayOfObject) {
   chosenWordContainer.innerHTML = '';
   wordArrayOfObject.forEach((item, index) => {
     let letterSpan = document.createElement('span');
     letterSpan.classList.add('text-orange-500', 'font-bold', 'drop-shadow-md', 'text-xl');
-    
+
     if (item.include) {
       letterSpan.innerText = ` ${item.letter} `;
     } else {
@@ -183,17 +179,16 @@ function displayGeneratedWord(wordArrayOfObject) {
 
     // Add a data attribute to the span to store its index
     letterSpan.setAttribute('data-index', index);
-    
+
     chosenWordContainer.appendChild(letterSpan);
   });
 }
-
 
 function updateWordArray(letter, wordArrayOfObject) {
   wordArrayOfObject.forEach((item, index) => {
     if (item.letter === letter) {
       item.include = true;
-      
+
       // Update all spans with the matching index
       let spans = document.querySelectorAll(`[data-index="${index}"]`);
       spans.forEach(span => {
@@ -203,7 +198,8 @@ function updateWordArray(letter, wordArrayOfObject) {
   });
 }
 
-//
+function hintedWordArray()
+
 // Hangman canvas generator (took from w3school)
 function canvasGenerator() {
   let context = canvas.getContext("2d");
@@ -289,12 +285,10 @@ function drawMan(count) {
   }
 };
 
-
 //reset button 
 resetButton.addEventListener('click', e => {
   window.location.reload()
 })
-
 
 //functions runs
 displayCategories();
