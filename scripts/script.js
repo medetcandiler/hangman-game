@@ -1,30 +1,25 @@
 var alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
   'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
   't', 'u', 'v', 'w', 'x', 'y', 'z'];
-
 let categories = {
   fruits: [
     "Apple",
     "Blueberry",
     "Mandarin",
     "Pineapple",
-    "Pomegranate",
+    "orange",
     "Watermelon",
   ],
-  animals: ["Hedgehog", "Rhinoceros", "Squirrel", "Panther", "Walrus", "Zebra"],
+  animals: ["Cat", "Turtles", "Squirrel", "Panther", "Snake", "Zebra"],
   countries: [
     "India",
     "Hungary",
     "Kyrgyzstan",
-    "Switzerland",
-    "Zimbabwe",
+    "Turkey",
+    "England",
     "Dominica",
   ],
 };
-
-
-
-
 // neccessary HTML elements
 const letterContainer = document.querySelector('#btn-container');
 const categoriesContainer = document.querySelector('#categories');
@@ -35,14 +30,13 @@ const chosenWordContainer = document.querySelector('#chosen-word-container');
 const canvasContainer = document.querySelector('#canvas-container');
 const remainContainer = document.querySelector('#remain-container');
 const canvass = document.querySelector('#canvas');
-
-
+const header = document.querySelector('#header');
 // neccessarry variables 
 let chosenCategory;
 let count = 0;
 let rightToTry = 7;
 let wordObject;
-
+let chosenWord;
 
 // display categories
 function displayCategories() {
@@ -60,28 +54,36 @@ function displayCategories() {
       if (e.target.innerText === 'Fruits') {
         chosenCategory = e.target.innerText.toLowerCase();
         selectedCategory.innerHTML = `<h3 class='text-2xl text-orange-600 text-center'>The Chosen Category is ${e.target.innerText}</h3>`;
-        // generateWord(chosenCategory);
-        genareteLetters(generateWord(chosenCategory));
+        chosenWord = generateWord(chosenCategory)
+        genareteLetters(chosenWord);
+        displayGeneratedWord(chosenWord);
         remainingRight(rightToTry);
         canvasContainer.classList.remove('hidden');
         categoriesContainer.style.display = 'none';
-        displayGeneratedWord(generateWord(chosenCategory))
+        header.classList.replace('mt-36', 'mt-4');
       } else if (e.target.innerText === 'Animals') {
         chosenCategory = e.target.innerText.toLowerCase();
         selectedCategory.innerHTML = `<h3 class='text-2xl text-orange-600 text-center'>The Chosen Category is ${e.target.innerText}</h3>`
-        genareteLetters(generateWord(chosenCategory));
+
+        chosenWord = generateWord(chosenCategory)
+        genareteLetters(chosenWord);
+        displayGeneratedWord(chosenWord);
         remainingRight(rightToTry);
         categoriesContainer.style.display = 'none';
         canvasContainer.classList.remove('hidden');
-        displayGeneratedWord(generateWord(chosenCategory))
+
+        header.classList.replace('mt-36', 'mt-4');
       } else {
         chosenCategory = e.target.innerText.toLowerCase();
         selectedCategory.innerHTML = `<h3 class='text-2xl text-orange-600 text-center'>The Chosen Category is ${e.target.innerText}</h3>`
-        genareteLetters(generateWord(chosenCategory));
+        chosenWord = generateWord(chosenCategory)
+        genareteLetters(chosenWord);
+        displayGeneratedWord(chosenWord);
         remainingRight(rightToTry);
         categoriesContainer.style.display = 'none';
         canvasContainer.classList.remove('hidden');
-        displayGeneratedWord(generateWord(chosenCategory))
+
+        header.classList.replace('mt-36', 'mt-4');
       }
     })
   })
@@ -90,7 +92,7 @@ function displayCategories() {
 
 // generator of letter buttons
 function genareteLetters(chosenWord) {
-  console.log(chosenWord);
+  console.log(chosenWord)
   for (let alp of alphabet) {
     const letterBtn = document.createElement('button');
     letterBtn.id = alphabet.indexOf(alp);
@@ -107,12 +109,13 @@ function letterClickHandler(letterButton, chosenWordArr) {
   letterButton.addEventListener('click', e => {
     e.target.disabled = true;
 
-    if (chosenWordArr.some(item => item.letter === e.target.textContent)) {
+    if (chosenWordArr.some(item => item.letter === e.target.textContent.toLowerCase())) {
       const clicked = chosenWordArr.find(item => item.letter === e.target.textContent)
       clicked.include = true
       displayGeneratedWord(chosenWordArr)
+      updateWordArray(e.target.textContent, chosenWordArr)
 
-    } else if (chosenWordArr.some(item => item.letter !== e.target.textContent)) {
+    } else if (chosenWordArr.some(item => item.letter !== e.target.textContent.toLowerCase())) {
       count++;
       rightToTry--;
 
@@ -129,8 +132,8 @@ function letterClickHandler(letterButton, chosenWordArr) {
         remainContainer.innerHTML = `
       <h1 class='text-2xl text-orange-500 text-center px-5 font-bold'> <strong>You Lost. The word was ${word.join('')} </strong> <br> If you would like to play again please click on Play Again button!
       `;
-        const x = letterContainer.childNodes;
-        x.forEach(item => item.disabled = true)
+      const x = letterContainer.childNodes;
+      x.forEach(item => item.disabled = true)
         canvass.style.display = 'none'
       }
     }
@@ -157,26 +160,43 @@ function generateWord(chosenCategory) {
   })
   return wordObject;
 }
-const letter = document.createElement('span');
-const underscopes = document.createElement('span');
+const div = document.createElement('div');
 
-// displayer of generated word's
-function displayGeneratedWord(wordObject) {
-  wordObject.forEach((item, i) => {
-    underscopes.id = i;
-    underscopes.textContent += ` ___ `;
-    underscopes.classList.add('text-orange-500', 'font-bold', 'drop-shadow-md')
-    chosenWordContainer.appendChild(underscopes)
-    if (item.include === true) {
-      underscopes.textContent = item.letter
-    } 
 
-  })
+function displayGeneratedWord(wordArrayOfObject) {
+  chosenWordContainer.innerHTML = '';
+  wordArrayOfObject.forEach((item, index) => {
+    let letterSpan = document.createElement('span');
+    letterSpan.classList.add('text-orange-500', 'font-bold', 'drop-shadow-md', 'text-xl');
+    
+    if (item.include) {
+      letterSpan.innerText = ` ${item.letter} `;
+    } else {
+      letterSpan.innerText = ` __ `;
+    }
+
+    // Add a data attribute to the span to store its index
+    letterSpan.setAttribute('data-index', index);
+    
+    chosenWordContainer.appendChild(letterSpan);
+  });
 }
 
 
+function updateWordArray(letter, wordArrayOfObject) {
+  wordArrayOfObject.forEach((item, index) => {
+    if (item.letter === letter) {
+      item.include = true;
+      
+      // Update all spans with the matching index
+      let spans = document.querySelectorAll(`[data-index="${index}"]`);
+      spans.forEach(span => {
+        span.innerText = `  ${letter}  `;
+      });
+    }
+  });
+}
 
-//
 //
 // Hangman canvas generator (took from w3school)
 function canvasGenerator() {
