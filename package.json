@@ -1,0 +1,12 @@
+{
+  "name": "hangman-game",
+  "version": "1.0.0",
+  "description": "## Overview Create a hangman game! <br> Example of what we want to accomplish [here](https://codepen.io/cathydutton/pen/ldazc). You can use it to know exactly what the game is about, but do not copy it. Use your own way. Be as creative as you can! (You don't need to implement Hint button)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

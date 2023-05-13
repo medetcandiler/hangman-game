@@ -15,3 +15,7 @@ body{
 button[disabled]{
   opacity: .40;
 }
+
+#canvas-container canvas{
+  padding-left: 150px;
+}

@@ -22,6 +22,9 @@ let categories = {
   ],
 };
 
+
+
+
 // neccessary HTML elements
 const letterContainer = document.querySelector('#btn-container');
 const categoriesContainer = document.querySelector('#categories');
@@ -38,6 +41,7 @@ const canvass = document.querySelector('#canvas');
 let chosenCategory;
 let count = 0;
 let rightToTry = 7;
+let wordObject;
 
 
 // display categories
@@ -59,30 +63,34 @@ function displayCategories() {
         // generateWord(chosenCategory);
         genareteLetters(generateWord(chosenCategory));
         remainingRight(rightToTry);
-
+        canvasContainer.classList.remove('hidden');
         categoriesContainer.style.display = 'none';
+        displayGeneratedWord(generateWord(chosenCategory))
       } else if (e.target.innerText === 'Animals') {
         chosenCategory = e.target.innerText.toLowerCase();
         selectedCategory.innerHTML = `<h3 class='text-2xl text-orange-600 text-center'>The Chosen Category is ${e.target.innerText}</h3>`
         genareteLetters(generateWord(chosenCategory));
         remainingRight(rightToTry);
         categoriesContainer.style.display = 'none';
+        canvasContainer.classList.remove('hidden');
+        displayGeneratedWord(generateWord(chosenCategory))
       } else {
         chosenCategory = e.target.innerText.toLowerCase();
         selectedCategory.innerHTML = `<h3 class='text-2xl text-orange-600 text-center'>The Chosen Category is ${e.target.innerText}</h3>`
         genareteLetters(generateWord(chosenCategory));
         remainingRight(rightToTry);
         categoriesContainer.style.display = 'none';
+        canvasContainer.classList.remove('hidden');
+        displayGeneratedWord(generateWord(chosenCategory))
       }
     })
   })
 }
 
 
-
-
 // generator of letter buttons
 function genareteLetters(chosenWord) {
+  console.log(chosenWord);
   for (let alp of alphabet) {
     const letterBtn = document.createElement('button');
     letterBtn.id = alphabet.indexOf(alp);
@@ -93,26 +101,21 @@ function genareteLetters(chosenWord) {
   }
 }
 
+
 // letter buttons onclick event 
-function letterClickHandler(letterButton, chosenWord) {
-  // to turn the chosenWord array into string 
-  word = chosenWord.join('');
-
-
-
+function letterClickHandler(letterButton, chosenWordArr) {
   letterButton.addEventListener('click', e => {
-    count++;
-    console.log(count, 'count')
-    e.target.disabled = true
-    if (e.target.textContent.includes(word)) {
-      // displayGeneratedWord(chosenWord);
+    e.target.disabled = true;
 
+    if (chosenWordArr.some(item => item.letter === e.target.textContent)) {
+      const clicked = chosenWordArr.find(item => item.letter === e.target.textContent)
+      clicked.include = true
+      displayGeneratedWord(chosenWordArr)
 
-
-    } else if (!e.target.textContent.includes(word)) {
+    } else if (chosenWordArr.some(item => item.letter !== e.target.textContent)) {
+      count++;
       rightToTry--;
-      console.log(rightToTry);
-      
+
       if (rightToTry === 1) {
         remainContainer.innerHTML = `The remaining right '${rightToTry}' <br>
         It is your last chance be careful!`
@@ -122,10 +125,13 @@ function letterClickHandler(letterButton, chosenWord) {
         drawMan(count)
       }
       if (count > 6) {
+        const word = chosenWordArr.map(item => item.letter.toUpperCase());
         remainContainer.innerHTML = `
-      <h1 class='text-2xl text-orange-500 text-center px-5 font-bold'> <strong>You Lost. The word was ${word.toUpperCase()}</strong> <br> If you would like to play again please click on Play Again button!
+      <h1 class='text-2xl text-orange-500 text-center px-5 font-bold'> <strong>You Lost. The word was ${word.join('')} </strong> <br> If you would like to play again please click on Play Again button!
       `;
-      canvass.style.display = 'none'
+        const x = letterContainer.childNodes;
+        x.forEach(item => item.disabled = true)
+        canvass.style.display = 'none'
       }
     }
   })
@@ -140,26 +146,36 @@ function remainingRight(remainRight) {
 
 // generate hangman vocabulary
 function generateWord(chosenCategory) {
-  console.log(chosenCategory, '--');
+
   const randomVocab = categories[chosenCategory][Math.floor(Math.random() * categories[chosenCategory].length)].toLowerCase();
   const randomVocabArr = randomVocab.split('');
-  displayGeneratedWord(randomVocabArr);
-  return randomVocabArr;
+  wordObject = randomVocabArr.map(item => {
+    return {
+      letter: item,
+      include: false,
+    }
+  })
+  return wordObject;
 }
-
+const letter = document.createElement('span');
+const underscopes = document.createElement('span');
 
 // displayer of generated word's
-function displayGeneratedWord(chosenWordArr) {
-  chosenWordArr.forEach(letter => {
-    const underscopes = document.createElement('span');
-    underscopes.textContent = ` ___ `;
-    underscopes.classList.add(`${letter}`, 'text-orange-500', 'font-bold', 'drop-shadow-md')
+function displayGeneratedWord(wordObject) {
+  wordObject.forEach((item, i) => {
+    underscopes.id = i;
+    underscopes.textContent += ` ___ `;
+    underscopes.classList.add('text-orange-500', 'font-bold', 'drop-shadow-md')
     chosenWordContainer.appendChild(underscopes)
+    if (item.include === true) {
+      underscopes.textContent = item.letter
+    } 
+
   })
-  return chosenWordArr;
 }
-//
-//
+
+
+
 //
 //
 // Hangman canvas generator (took from w3school)
