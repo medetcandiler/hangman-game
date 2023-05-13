@@ -31,6 +31,8 @@ const canvasContainer = document.querySelector('#canvas-container');
 const remainContainer = document.querySelector('#remain-container');
 const canvass = document.querySelector('#canvas');
 const header = document.querySelector('#header');
+const welcome = document.querySelector('#welcome');
+
 // neccessarry variables 
 let chosenCategory;
 let count = 0;
@@ -60,19 +62,19 @@ function displayCategories() {
         remainingRight(rightToTry);
         canvasContainer.classList.remove('hidden');
         categoriesContainer.style.display = 'none';
-        header.classList.replace('mt-36', 'mt-4');
+        header.classList.replace('mt-24', 'mt-4');
+        welcome.style.display = 'none';
       } else if (e.target.innerText === 'Animals') {
         chosenCategory = e.target.innerText.toLowerCase();
         selectedCategory.innerHTML = `<h3 class='text-2xl text-orange-600 text-center'>The Chosen Category is ${e.target.innerText}</h3>`
-
         chosenWord = generateWord(chosenCategory)
         genareteLetters(chosenWord);
         displayGeneratedWord(chosenWord);
         remainingRight(rightToTry);
         categoriesContainer.style.display = 'none';
         canvasContainer.classList.remove('hidden');
-
-        header.classList.replace('mt-36', 'mt-4');
+        welcome.style.display = 'none';
+        header.classList.replace('mt-24', 'mt-4');
       } else {
         chosenCategory = e.target.innerText.toLowerCase();
         selectedCategory.innerHTML = `<h3 class='text-2xl text-orange-600 text-center'>The Chosen Category is ${e.target.innerText}</h3>`
@@ -82,12 +84,13 @@ function displayCategories() {
         remainingRight(rightToTry);
         categoriesContainer.style.display = 'none';
         canvasContainer.classList.remove('hidden');
-
-        header.classList.replace('mt-36', 'mt-4');
+        welcome.style.display = 'none';
+        header.classList.replace('mt-24', 'mt-4');
       }
     })
   })
 }
+
 
 
 // generator of letter buttons
@@ -103,18 +106,21 @@ function genareteLetters(chosenWord) {
   }
 }
 
-
-// letter buttons onclick event 
+// letters buttons click handler  
 function letterClickHandler(letterButton, chosenWordArr) {
   letterButton.addEventListener('click', e => {
     e.target.disabled = true;
-
     if (chosenWordArr.some(item => item.letter === e.target.textContent.toLowerCase())) {
       const clicked = chosenWordArr.find(item => item.letter === e.target.textContent)
       clicked.include = true
       displayGeneratedWord(chosenWordArr)
       updateWordArray(e.target.textContent, chosenWordArr)
-
+      if(chosenWordArr.every(item => item.include === true )){
+        remainContainer.innerHTML = `
+      <h1 class='text-2xl text-orange-500 text-center px-5 font-bold'> <strong>Congratulations you have guessed the word. If you would like to play again please click on the Play Again button!
+      `;
+      canvass.style.display = 'none'
+      }
     } else if (chosenWordArr.some(item => item.letter !== e.target.textContent.toLowerCase())) {
       count++;
       rightToTry--;
@@ -149,8 +155,8 @@ function remainingRight(remainRight) {
 
 // generate hangman vocabulary
 function generateWord(chosenCategory) {
-
   const randomVocab = categories[chosenCategory][Math.floor(Math.random() * categories[chosenCategory].length)].toLowerCase();
+  console.log(randomVocab)
   const randomVocabArr = randomVocab.split('');
   wordObject = randomVocabArr.map(item => {
     return {
