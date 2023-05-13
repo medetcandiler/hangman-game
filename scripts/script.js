@@ -296,4 +296,4 @@ resetButton.addEventListener('click', e => {
 displayCategories();
 canvasGenerator().initialDrawing();
 
-
+console.log('hello')
