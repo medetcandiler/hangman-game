@@ -20,6 +20,8 @@ let categories = {
     "Dominica",
   ],
 };
+
+
 // neccessary HTML elements
 const letterContainer = document.querySelector('#btn-container');
 const categoriesContainer = document.querySelector('#categories');
@@ -198,7 +200,7 @@ function updateWordArray(letter, wordArrayOfObject) {
   });
 }
 
-function hintedWordArray()
+
 
 // Hangman canvas generator (took from w3school)
 function canvasGenerator() {
