@@ -202,6 +202,9 @@ function updateWordArray(letter, wordArrayOfObject) {
 
 
 
+
+
+
 // Hangman canvas generator (took from w3school)
 function canvasGenerator() {
   let context = canvas.getContext("2d");
@@ -296,4 +299,3 @@ resetButton.addEventListener('click', e => {
 displayCategories();
 canvasGenerator().initialDrawing();
 
-console.log('hello')
