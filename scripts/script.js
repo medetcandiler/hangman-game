@@ -21,6 +21,123 @@ let categories = {
   ],
 };
 
+let hints = {
+  fruits: {
+    Apple: [
+      "A popular fruit often associated with tech.",
+      "Used to make pies and cider.",
+      "Available in various varieties like Gala, Fuji, etc.",
+      "The fruit of the apple tree."
+    ],
+    Blueberry: [
+      "Small, round, and often used in muffins.",
+      "Known for its antioxidant properties.",
+      "Commonly found in pancakes and smoothies.",
+      "A berry that is blue in color."
+    ],
+    Mandarin: [
+      "A citrus fruit that is easy to peel.",
+      "Often enjoyed as a snack.",
+      "Commonly used in Asian cuisine.",
+      "Known for its sweet and tangy flavor."
+    ],
+    Pineapple: [
+      "Tropical fruit with a spiky outer layer.",
+      "Contains enzymes that can tenderize meat.",
+      "A symbol of hospitality in some cultures.",
+      "Used in both sweet and savory dishes."
+    ],
+    Orange: [
+      "A citrus fruit known for its juicy flavor.",
+      "Commonly consumed as a source of vitamin C.",
+      "Can be eaten fresh or juiced.",
+      "The color of the fruit is named after it."
+    ],
+    Watermelon: [
+      "A large, green fruit with sweet red flesh.",
+      "Consists mostly of water and is hydrating.",
+      "A popular summertime fruit.",
+      "Often enjoyed at picnics and barbecues."
+    ],
+  },
+  animals: {
+    Cat: [
+      "A common household pet known for its independence.",
+      "Closely associated with internet memes.",
+      "Comes in various breeds, sizes, and colors.",
+      "Known for its grooming behavior."
+    ],
+    Turtles: [
+      "Reptiles with a protective shell.",
+      "Known for their slow movement on land.",
+      "Can be aquatic or terrestrial.",
+      "Some species are endangered."
+    ],
+    Squirrel: [
+      "A small, bushy-tailed rodent.",
+      "Often seen climbing trees and collecting nuts.",
+      "Known for their agility and acrobatic movements.",
+      "Can be found in urban and suburban areas."
+    ],
+    Panther: [
+      "A large wild cat with a black coat.",
+      "Has powerful jaws and is a skilled hunter.",
+      "Found in various habitats, including rainforests.",
+      "A symbol of strength and stealth."
+    ],
+    Snake: [
+      "A legless reptile often feared by many.",
+      "Some species are venomous, while others are not.",
+      "Uses its tongue to 'smell' the environment.",
+      "Sheds its skin periodically."
+    ],
+    Zebra: [
+      "An African mammal with black and white stripes.",
+      "Known for its distinctive striped coat.",
+      "Found in grasslands and savannas.",
+      "Each zebra has a unique stripe pattern."
+    ],
+  },
+  countries: {
+    India: [
+      "A diverse country known for its rich culture.",
+      "Home to the Taj Mahal and Bollywood.",
+      "Has a variety of languages, religions, and traditions.",
+      "The second-most populous country in the world."
+    ],
+    Hungary: [
+      "A landlocked country in Central Europe.",
+      "Famous for its thermal baths and goulash.",
+      "The capital city is Budapest.",
+      "Member of the European Union."
+    ],
+    Kyrgyzstan: [
+      "A Central Asian country with mountainous terrain.",
+      "Known for its nomadic traditions.",
+      "Has beautiful landscapes and mountain lakes.",
+      "The capital city is Bishkek."
+    ],
+    Turkey: [
+      "A transcontinental country located mainly on the Anatolian Peninsula.",
+      "Famous for its unique blend of Eastern and Western cultures.",
+      "The city of Istanbul straddles two continents.",
+      "Rich history with influences from the Byzantine and Ottoman Empires."
+    ],
+    England: [
+      "A country in the United Kingdom known for its history.",
+      "Home to iconic landmarks such as Big Ben and the Tower of London.",
+      "Famous for its literature, including works of William Shakespeare.",
+      "The capital city is London."
+    ],
+    Dominica: [
+      "An island nation in the Caribbean with lush rainforests.",
+      "Nicknamed the 'Nature Isle of the Caribbean.'",
+      "Known for its biodiversity and hiking trails.",
+      "The capital city is Roseau."
+    ],
+  },
+};
+
 
 // neccessary HTML elements
 const letterContainer = document.querySelector('#btn-container');
@@ -41,7 +158,7 @@ let chosenCategory;
 let count = 0;
 let rightToTry = 7;
 let chosenWord;
-
+let hintClickCounter = 0;
 
 // display categories
 function displayCategories() {
@@ -95,7 +212,6 @@ function displayCategories() {
 
 // generator of letter buttons
 function genareteLetters(chosenWord) {
-  console.log(chosenWord)
   for (let alp of alphabet) {
     const letterBtn = document.createElement('button');
     letterBtn.id = alphabet.indexOf(alp);
@@ -127,7 +243,8 @@ function letterClickHandler(letterButton, chosenWordArr) {
       if (rightToTry === 1) {
         remainContainer.innerHTML = `The remaining right: ${rightToTry} <br>
         It is your last chance be careful!`
-        drawMan(count)
+        drawMan(count);
+        hintButton.disabled = true
       } else {
         remainingRight(rightToTry)
         drawMan(count)
@@ -137,15 +254,13 @@ function letterClickHandler(letterButton, chosenWordArr) {
         remainContainer.innerHTML = `
       <h1 class='text-2xl text-orange-500 text-center px-5 font-bold'> <strong>You Lost. The word was ${word.join('')} </strong> <br> If you would like to play again please click on Play Again button!
       `;
-        const x = letterContainer.childNodes;
-        x.forEach(item => item.disabled = true)
+        const buttons = letterContainer.childNodes;
+        buttons.forEach(item => item.disabled = true)
         canvass.style.display = 'none'
       }
     }
   })
 }
-
-
 
 // remaining right displayer
 function remainingRight(remainRight) {
@@ -156,7 +271,6 @@ function remainingRight(remainRight) {
 // generate hangman vocabulary
 function generateWord(chosenCategory) {
   const randomVocab = categories[chosenCategory][Math.floor(Math.random() * categories[chosenCategory].length)].toLowerCase();
-  console.log(randomVocab)
   const randomVocabArr = randomVocab.split('');
   wordObject = randomVocabArr.map(item => {
     return {
@@ -181,7 +295,6 @@ function displayGeneratedWord(wordArrayOfObject) {
 
     // Add a data attribute to the span to store its index
     letterSpan.setAttribute('data-index', index);
-
     chosenWordContainer.appendChild(letterSpan);
   });
 }
@@ -200,14 +313,9 @@ function updateWordArray(letter, wordArrayOfObject) {
   });
 }
 
-
-
-
-
-
 // Hangman canvas generator (took from w3school)
 function canvasGenerator() {
-  let context = canvas.getContext("2d");
+  let context = canvass.getContext("2d");
   context.beginPath();
   context.fillStyle = 'green';
   context.strokeStyle = "#EA580C";
@@ -293,6 +401,24 @@ function drawMan(count) {
 //reset button 
 resetButton.addEventListener('click', e => {
   window.location.reload()
+});
+
+// hint button
+hintButton.addEventListener('click', e => {
+  rightToTry--;
+  hintClickCounter++;
+  remainingRight(rightToTry)
+  console.log(hintClickCounter)
+  const chosenWordString = chosenWord.map(word => word.letter).join('')
+  let selectedWordsHint = hints[chosenCategory][chosenWordString[0].toUpperCase() + chosenWordString.slice(1, chosenWordString.length)][hintClickCounter - 1]
+  if(hintClickCounter === 5) hintButton.disabled = true
+  console.log(selectedWordsHint);
+  // const EL_HINT = document.createElement('p');
+  // EL_HINT.textContent = selectedWordsHint
+  // setTimeout(() => {
+  //   EL_HINT.remove();
+  // }, 3000);
+  // canvasContainer.appendChild(EL_HINT);
 })
 
 //functions runs
