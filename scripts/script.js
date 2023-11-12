@@ -24,34 +24,34 @@ let categories = {
 let hints = {
   fruits: {
     Apple: [
-      "A popular fruit often associated with tech.",
-      "Used to make pies and cider.",
-      "Available in various varieties like Gala, Fuji, etc.",
-      "The fruit of the apple tree."
+      "Commonly used in pies and cider.",
+      "Has a variety of colors, including red and green.",
+      "Often paired with peanut butter.",
+      "A popular fruit with a crisp texture."
     ],
     Blueberry: [
       "Small, round, and often used in muffins.",
       "Known for its antioxidant properties.",
-      "Commonly found in pancakes and smoothies.",
-      "A berry that is blue in color."
+      "A berry that is blue in color.",
+      "Often included in breakfast foods like pancakes."
     ],
     Mandarin: [
       "A citrus fruit that is easy to peel.",
-      "Often enjoyed as a snack.",
-      "Commonly used in Asian cuisine.",
-      "Known for its sweet and tangy flavor."
+      "Commonly enjoyed in segments.",
+      "Popular in Asian cuisine.",
+      "Has a sweet and tangy flavor."
     ],
     Pineapple: [
       "Tropical fruit with a spiky outer layer.",
-      "Contains enzymes that can tenderize meat.",
-      "A symbol of hospitality in some cultures.",
-      "Used in both sweet and savory dishes."
+      "Used in both sweet and savory dishes.",
+      "Commonly enjoyed in fruit salads.",
+      "Contains enzymes that can tenderize meat."
     ],
     Orange: [
       "A citrus fruit known for its juicy flavor.",
       "Commonly consumed as a source of vitamin C.",
-      "Can be eaten fresh or juiced.",
-      "The color of the fruit is named after it."
+      "The color of the fruit is named after it.",
+      "Can be eaten fresh or juiced."
     ],
     Watermelon: [
       "A large, green fruit with sweet red flesh.",
@@ -65,7 +65,7 @@ let hints = {
       "A common household pet known for its independence.",
       "Closely associated with internet memes.",
       "Comes in various breeds, sizes, and colors.",
-      "Known for its grooming behavior."
+      "Known for grooming itself frequently."
     ],
     Turtles: [
       "Reptiles with a protective shell.",
@@ -75,14 +75,14 @@ let hints = {
     ],
     Squirrel: [
       "A small, bushy-tailed rodent.",
-      "Often seen climbing trees and collecting nuts.",
       "Known for their agility and acrobatic movements.",
-      "Can be found in urban and suburban areas."
+      "Frequently seen climbing trees.",
+      "Often gathers and stores nuts for winter."
     ],
     Panther: [
       "A large wild cat with a black coat.",
-      "Has powerful jaws and is a skilled hunter.",
       "Found in various habitats, including rainforests.",
+      "Has powerful jaws and is a skilled hunter.",
       "A symbol of strength and stealth."
     ],
     Snake: [
@@ -139,6 +139,7 @@ let hints = {
 };
 
 
+
 // neccessary HTML elements
 const letterContainer = document.querySelector('#btn-container');
 const categoriesContainer = document.querySelector('#categories');
@@ -152,6 +153,7 @@ const canvass = document.querySelector('#canvas');
 const header = document.querySelector('#header');
 const welcome = document.querySelector('#welcome');
 const hintButton = document.querySelector('#hint');
+const hintPlace = document.querySelector('#hintPlace');
 
 // neccessarry variables 
 let chosenCategory;
@@ -162,10 +164,10 @@ let hintClickCounter = 0;
 
 // display categories
 function displayCategories() {
-  categoriesContainer.innerHTML = `<h3 class='text-2xl text-orange-600 text-center'>Categories:</h3>`
+  categoriesContainer.innerHTML = `<h3 class='text-2xl text-orange-700 text-center'>Categories:</h3>`
   const buttonContainer = document.createElement('div');
   for (let cat in categories) {
-    buttonContainer.innerHTML += `<button class='categories px-6 py-3 focus:ring-orange-600 focus:ring-4 text-orange-600 border border-orange-600 rounded-lg bg-transparent hover:bg-orange-600 ease-in duration-300 hover:text-[#C1D72E] mr-3'>${cat[0].toUpperCase() + cat.slice(1, cat.length)}</button>`
+    buttonContainer.innerHTML += `<button class='categories px-6 py-3 focus:ring-orange-600 focus:ring-4 text-orange-700 border border-orange-700 rounded-lg bg-transparent hover:bg-orange-700 ease-in duration-300 hover:text-[#C1D72E] mr-3'>${cat[0].toUpperCase() + cat.slice(1, cat.length)}</button>`
     categoriesContainer.appendChild(buttonContainer)
   }
   let categoriesBtns = document.querySelectorAll('.categories');
@@ -174,7 +176,7 @@ function displayCategories() {
       bottomButtons.classList.remove('hidden');
       if (e.target.innerText === 'Fruits') {
         chosenCategory = e.target.innerText.toLowerCase();
-        selectedCategory.innerHTML = `<h3 class='text-2xl text-orange-600 text-center'>The Chosen Category is ${e.target.innerText}</h3>`;
+        selectedCategory.innerHTML = `<h3 class='text-2xl text-orange-700 text-center'>The Chosen Category is ${e.target.innerText}</h3>`;
         chosenWord = generateWord(chosenCategory)
         genareteLetters(chosenWord);
         displayGeneratedWord(chosenWord);
@@ -185,7 +187,7 @@ function displayCategories() {
         welcome.style.display = 'none';
       } else if (e.target.innerText === 'Animals') {
         chosenCategory = e.target.innerText.toLowerCase();
-        selectedCategory.innerHTML = `<h3 class='text-2xl text-orange-600 text-center'>The Chosen Category is ${e.target.innerText}</h3>`
+        selectedCategory.innerHTML = `<h3 class='text-2xl text-orange-700 text-center'>The Chosen Category is ${e.target.innerText}</h3>`
         chosenWord = generateWord(chosenCategory)
         genareteLetters(chosenWord);
         displayGeneratedWord(chosenWord);
@@ -196,7 +198,7 @@ function displayCategories() {
         header.classList.replace('mt-24', 'mt-4');
       } else {
         chosenCategory = e.target.innerText.toLowerCase();
-        selectedCategory.innerHTML = `<h3 class='text-2xl text-orange-600 text-center'>The Chosen Category is ${e.target.innerText}</h3>`
+        selectedCategory.innerHTML = `<h3 class='text-2xl text-orange-700 text-center'>The Chosen Category is ${e.target.innerText}</h3>`
         chosenWord = generateWord(chosenCategory)
         genareteLetters(chosenWord);
         displayGeneratedWord(chosenWord);
@@ -216,7 +218,7 @@ function genareteLetters(chosenWord) {
     const letterBtn = document.createElement('button');
     letterBtn.id = alphabet.indexOf(alp);
     letterBtn.innerText = alp;
-    letterBtn.classList.add('text-[#C1D72E]', 'px-6', 'py-3', 'bg-orange-600', 'border', 'border-orange-600', 'hover:bg-transparent', 'hover:text-orange-600', 'rounded-lg');
+    letterBtn.classList.add('text-[#C1D72E]', 'px-6', 'py-3', 'bg-orange-700', 'border', 'border-orange-700', 'hover:bg-transparent', 'hover:text-orange-700', 'rounded-lg');
     letterContainer.appendChild(letterBtn);
     letterClickHandler(letterBtn, chosenWord)
   }
@@ -225,6 +227,8 @@ function genareteLetters(chosenWord) {
 // letters buttons click handler  
 function letterClickHandler(letterButton, chosenWordArr) {
   letterButton.addEventListener('click', e => {
+    // if (rightToTry <= 0) return;
+
     e.target.disabled = true;
     if (chosenWordArr.some(item => item.letter === e.target.textContent.toLowerCase())) {
       const clicked = chosenWordArr.find(item => item.letter === e.target.textContent)
@@ -233,37 +237,38 @@ function letterClickHandler(letterButton, chosenWordArr) {
       updateWordArray(e.target.textContent, chosenWordArr)
       if (chosenWordArr.every(item => item.include === true)) {
         remainContainer.innerHTML = `
-      <h1 class='text-2xl text-orange-500 text-center px-5 font-bold'> <strong>Congratulations you have guessed the word. If you would like to play again please click on the Play Again button!
+      <h1 class='text-2xl text-orange-700 text-center px-5 font-bold'> <strong>Congratulations you have guessed the word. If you would like to play again please click on the Play Again button!
       `;
         canvass.style.display = 'none'
       }
     } else if (chosenWordArr.some(item => item.letter !== e.target.textContent.toLowerCase())) {
       count++;
       rightToTry--;
+      console.log(rightToTry)
       if (rightToTry === 1) {
         remainContainer.innerHTML = `The remaining right: ${rightToTry} <br>
         It is your last chance be careful!`
         drawMan(count);
         hintButton.disabled = true
-      } else {
-        remainingRight(rightToTry)
-        drawMan(count)
-      }
-      if (count > 6) {
+      } else if (count > 6 || rightToTry <= 0) {
         const word = chosenWordArr.map(item => item.letter.toUpperCase());
         remainContainer.innerHTML = `
-      <h1 class='text-2xl text-orange-500 text-center px-5 font-bold'> <strong>You Lost. The word was ${word.join('')} </strong> <br> If you would like to play again please click on Play Again button!
+      <h1 class='text-2xl text-orange-700 text-center px-5 font-bold'> <strong>You Lost. The word was ${word.join('')} </strong> <br> If you would like to play again please click on Play Again button!
       `;
         const buttons = letterContainer.childNodes;
         buttons.forEach(item => item.disabled = true)
         canvass.style.display = 'none'
-      }
+      } else {
+        remainingRight(rightToTry)
+        drawMan(count)
+      };
     }
   })
 }
 
 // remaining right displayer
 function remainingRight(remainRight) {
+  remainRight;
   remainContainer.innerHTML = `The remaining right: ${remainRight} `
 }
 
@@ -285,7 +290,7 @@ function displayGeneratedWord(wordArrayOfObject) {
   chosenWordContainer.innerHTML = '';
   wordArrayOfObject.forEach((item, index) => {
     let letterSpan = document.createElement('span');
-    letterSpan.classList.add('text-orange-500', 'font-bold', 'drop-shadow-md', 'text-xl');
+    letterSpan.classList.add('text-orange-700', 'font-bold', 'drop-shadow-md', 'text-xl');
 
     if (item.include) {
       letterSpan.innerText = ` ${item.letter} `;
@@ -293,7 +298,6 @@ function displayGeneratedWord(wordArrayOfObject) {
       letterSpan.innerText = ` __ `;
     }
 
-    // Add a data attribute to the span to store its index
     letterSpan.setAttribute('data-index', index);
     chosenWordContainer.appendChild(letterSpan);
   });
@@ -405,20 +409,22 @@ resetButton.addEventListener('click', e => {
 
 // hint button
 hintButton.addEventListener('click', e => {
-  rightToTry--;
-  hintClickCounter++;
-  remainingRight(rightToTry)
-  console.log(hintClickCounter)
-  const chosenWordString = chosenWord.map(word => word.letter).join('')
-  let selectedWordsHint = hints[chosenCategory][chosenWordString[0].toUpperCase() + chosenWordString.slice(1, chosenWordString.length)][hintClickCounter - 1]
-  if(hintClickCounter === 5) hintButton.disabled = true
-  console.log(selectedWordsHint);
-  // const EL_HINT = document.createElement('p');
-  // EL_HINT.textContent = selectedWordsHint
-  // setTimeout(() => {
-  //   EL_HINT.remove();
-  // }, 3000);
-  // canvasContainer.appendChild(EL_HINT);
+  if (hintClickCounter < 4) {
+    rightToTry--;
+    hintClickCounter++;
+    remainingRight(rightToTry)
+
+    const chosenWordString = chosenWord.map(word => word.letter).join('')
+    let selectedWordsHint = hints[chosenCategory][chosenWordString[0].toUpperCase() + chosenWordString.slice(1, chosenWordString.length)][hintClickCounter - 1]
+
+    hintPlace.textContent = selectedWordsHint
+    setTimeout(() => {
+      hintPlace.textContent = '';
+    }, 5000);
+
+    if (hintClickCounter === 4) hintButton.disabled = true;
+  }
+
 })
 
 //functions runs
