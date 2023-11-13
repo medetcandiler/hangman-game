@@ -9,29 +9,34 @@
   </head>
   <body>
     <section class="md:h-screen">
-      <div id="header" class="container mx-auto text-center space-y-4 pt-4">
-        <h2 id="welcome" class="text-5xl text-orange-700">WELCOME TO THE</h2>
-        <h2 class="text-5xl text-orange-700">JAVASCRIPT HANGMAN GAME</h2>
-        <p class="text-orange-700 text-2xl"> 
+      <div id="header" class="container mx-auto text-center space-y-2 pt-4">
+        <h2 id="welcome" class="text-4xl text-orange-700 md:text-5xl">
+          GUESS & CONQUER
+        </h2>
+        <h2 class="text-4xl text-orange-700 md:text-5xl">
+          The JavaScript Hangman Challenge
+        </h2>
+        <p class="text-xl text-orange-700 md:text-2xl py-2">
           Please Select an Category and use the alphabet below to guess the word
         </p>
       </div>
-      <div class="container mx-auto text-center space-y-4">
+      <div class="container mx-auto text-center space-y-4 px-4">
         <div id="categories" class="space-x-2 space-y-2"></div>
         <div id="selected-category"></div>
-        <div id="btn-container" class="space-x-4 space-y-2"></div>
+        <div
+          id="btn-container"
+          class="flex flex-wrap justify-center gap-2"
+        ></div>
         <div id="chosen-word-container" class="pb-2 pt-5"></div>
         <div
           id="canvas-container"
-          class="hidden relative container mx-auto border-4 border-orange-700 rounded-xl flex flex-col justify-center items-center h-64 w-1/2"
+          class="hidden relative container mx-auto border-4 border-orange-700 rounded-xl flex flex-col justify-center items-center pt-16 pb-5 md:w-1/2"
         >
-          <div class="w-full">
-            <p
-              id="hintPlace"
-              class="absolute top-0 right-1/2 translate-x-1/2 my-1 text-orange-700 text-center text-md whitespace-nowrap"
-            ></p>
-          </div>
-          <canvas id="canvas" style="color: yellow"></canvas>
+          <p
+            id="hintPlace"
+            class="absolute top-0 right-1/2 w-full translate-x-1/2 text-orange-700 leading-normal my-3 px-4 text-center text-sm font-semibold"
+          ></p>
+          <canvas id="canvas" style="color: orange"></canvas>
           <div
             id="remain-container"
             class="flex flex-col items-center justify-center w-full space-y-3 text-orange-700 font-bold text-xl"

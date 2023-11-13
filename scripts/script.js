@@ -167,7 +167,7 @@ function displayCategories() {
   categoriesContainer.innerHTML = `<h3 class='text-2xl text-orange-700 text-center'>Categories:</h3>`
   const buttonContainer = document.createElement('div');
   for (let cat in categories) {
-    buttonContainer.innerHTML += `<button class='categories px-6 py-3 focus:ring-orange-600 focus:ring-4 text-orange-700 border border-orange-700 rounded-lg bg-transparent hover:bg-orange-700 ease-in duration-300 hover:text-[#C1D72E] mr-3'>${cat[0].toUpperCase() + cat.slice(1, cat.length)}</button>`
+    buttonContainer.innerHTML += `<button class='categories px-4 py-2 focus:ring-orange-600 focus:ring-4 text-orange-700 border border-orange-700 rounded-lg bg-transparent hover:bg-orange-700 ease-in duration-300 hover:text-[#C1D72E] mr-3 md:px-6 md:py-3'>${cat[0].toUpperCase() + cat.slice(1, cat.length)}</button>`
     categoriesContainer.appendChild(buttonContainer)
   }
   let categoriesBtns = document.querySelectorAll('.categories');
@@ -218,7 +218,7 @@ function genareteLetters(chosenWord) {
     const letterBtn = document.createElement('button');
     letterBtn.id = alphabet.indexOf(alp);
     letterBtn.innerText = alp;
-    letterBtn.classList.add('text-[#C1D72E]', 'px-6', 'py-3', 'bg-orange-700', 'border', 'border-orange-700', 'hover:bg-transparent', 'hover:text-orange-700', 'rounded-lg');
+    letterBtn.classList.add('text-[#C1D72E]', 'px-4', 'py-2', 'bg-orange-700', 'border', 'border-orange-700', 'hover:bg-transparent', 'hover:text-orange-700', 'rounded-lg', 'md:px-5', 'md:py-3');
     letterContainer.appendChild(letterBtn);
     letterClickHandler(letterBtn, chosenWord)
   }
@@ -237,7 +237,7 @@ function letterClickHandler(letterButton, chosenWordArr) {
       updateWordArray(e.target.textContent, chosenWordArr)
       if (chosenWordArr.every(item => item.include === true)) {
         remainContainer.innerHTML = `
-      <h1 class='text-2xl text-orange-700 text-center px-5 font-bold'> <strong>Congratulations you have guessed the word. If you would like to play again please click on the Play Again button!
+      <h1 class='text-xl text-orange-700 text-center px-5 font-bold md:text-2xl'> <strong>Congratulations you have guessed the word. If you would like to play again please click on the Play Again button!
       `;
         canvass.style.display = 'none'
       }
@@ -253,7 +253,7 @@ function letterClickHandler(letterButton, chosenWordArr) {
       } else if (count > 6 || rightToTry <= 0) {
         const word = chosenWordArr.map(item => item.letter.toUpperCase());
         remainContainer.innerHTML = `
-      <h1 class='text-2xl text-orange-700 text-center px-5 font-bold'> <strong>You Lost. The word was ${word.join('')} </strong> <br> If you would like to play again please click on Play Again button!
+      <h1 class='text-xl text-orange-700 text-center px-5 font-bold md:text-2xl'> <strong>You Lost. The word was "${word.join('')}" </strong> <br> If you would like to play again please click on Play Again button!
       `;
         const buttons = letterContainer.childNodes;
         buttons.forEach(item => item.disabled = true)
@@ -290,7 +290,7 @@ function displayGeneratedWord(wordArrayOfObject) {
   chosenWordContainer.innerHTML = '';
   wordArrayOfObject.forEach((item, index) => {
     let letterSpan = document.createElement('span');
-    letterSpan.classList.add('text-orange-700', 'font-bold', 'drop-shadow-md', 'text-xl');
+    letterSpan.classList.add('text-orange-700', 'font-bold', 'drop-shadow-md','text-lg' ,'md:text-xl');
 
     if (item.include) {
       letterSpan.innerText = ` ${item.letter} `;
@@ -322,7 +322,7 @@ function canvasGenerator() {
   let context = canvass.getContext("2d");
   context.beginPath();
   context.fillStyle = 'green';
-  context.strokeStyle = "#EA580C";
+  context.strokeStyle = "#C1400B";
   context.lineWidth = 2;
 
   //For drawing lines
@@ -420,9 +420,9 @@ hintButton.addEventListener('click', e => {
     hintPlace.textContent = selectedWordsHint
     setTimeout(() => {
       hintPlace.textContent = '';
-    }, 5000);
+    }, 100000000);
 
-    if (hintClickCounter === 4) hintButton.disabled = true;
+    if (hintClickCounter === 4 || rightToTry <= 1) hintButton.disabled = true;
   }
 
 })
