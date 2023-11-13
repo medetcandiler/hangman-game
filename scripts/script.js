@@ -420,7 +420,7 @@ hintButton.addEventListener('click', e => {
     hintPlace.textContent = selectedWordsHint
     setTimeout(() => {
       hintPlace.textContent = '';
-    }, 100000000);
+    }, 5000);
 
     if (hintClickCounter === 4 || rightToTry <= 1) hintButton.disabled = true;
   }
