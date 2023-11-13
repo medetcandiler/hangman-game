@@ -237,7 +237,7 @@ function letterClickHandler(letterButton, chosenWordArr) {
       updateWordArray(e.target.textContent, chosenWordArr)
       if (chosenWordArr.every(item => item.include === true)) {
         remainContainer.innerHTML = `
-      <h1 class='text-xl text-orange-700 text-center px-5 font-bold md:text-2xl'> <strong>Congratulations you have guessed the word. If you would like to play again please click on the Play Again button!
+      <h1 class='text-xl text-orange-700 text-center px-5  mb-10 font-bold md:text-2xl'> <strong>Congratulations you have guessed the word. If you would like to play again please click on the Play Again button!
       `;
         canvass.style.display = 'none'
       }
@@ -253,7 +253,7 @@ function letterClickHandler(letterButton, chosenWordArr) {
       } else if (count > 6 || rightToTry <= 0) {
         const word = chosenWordArr.map(item => item.letter.toUpperCase());
         remainContainer.innerHTML = `
-      <h1 class='text-xl text-orange-700 text-center px-5 font-bold md:text-2xl'> <strong>You Lost. The word was "${word.join('')}" </strong> <br> If you would like to play again please click on Play Again button!
+      <h1 class='text-xl text-orange-700 text-center px-5  mb-10 font-bold md:text-2xl'> <strong>You Lost. The word was "${word.join('')}" </strong> <br> If you would like to play again please click on Play Again button!
       `;
         const buttons = letterContainer.childNodes;
         buttons.forEach(item => item.disabled = true)
