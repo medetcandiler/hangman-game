@@ -290,7 +290,7 @@ function displayGeneratedWord(wordArrayOfObject) {
   chosenWordContainer.innerHTML = '';
   wordArrayOfObject.forEach((item, index) => {
     let letterSpan = document.createElement('span');
-    letterSpan.classList.add('text-orange-700', 'font-bold', 'drop-shadow-md','text-lg' ,'md:text-xl');
+    letterSpan.classList.add('text-orange-700', 'font-bold', 'drop-shadow-md', 'text-lg', 'md:text-xl');
 
     if (item.include) {
       letterSpan.innerText = ` ${item.letter} `;
@@ -408,26 +408,28 @@ resetButton.addEventListener('click', e => {
 });
 
 // hint button
-hintButton.addEventListener('click', e => {
+hintButton.addEventListener('click', _ => {
+  if (hintPlace.textContent) return;
   if (hintClickCounter < 4) {
     rightToTry--;
     hintClickCounter++;
-    remainingRight(rightToTry)
+    remainingRight(rightToTry);
 
-    const chosenWordString = chosenWord.map(word => word.letter).join('')
-    let selectedWordsHint = hints[chosenCategory][chosenWordString[0].toUpperCase() + chosenWordString.slice(1, chosenWordString.length)][hintClickCounter - 1]
+    const chosenWordString = chosenWord.map(word => word.letter).join('');
+    let selectedWordsHint = hints[chosenCategory][chosenWordString[0].toUpperCase() + chosenWordString.slice(1, chosenWordString.length)][hintClickCounter - 1];
 
-    hintPlace.textContent = selectedWordsHint
+    hintPlace.textContent = selectedWordsHint;
     setTimeout(() => {
       hintPlace.textContent = '';
     }, 5000);
 
     if (hintClickCounter === 4 || rightToTry <= 1) hintButton.disabled = true;
+
   }
+
 
 })
 
-//functions runs
 displayCategories();
 canvasGenerator().initialDrawing();
 
